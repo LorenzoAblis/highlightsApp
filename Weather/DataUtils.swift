@@ -1,7 +1,6 @@
 import SwiftUI
-import Foundation
 
-final class DataFormatter {
+final class DataUtils {
     func formatTime(dateString: String, startFormat: String, endFormat: String, ordinal: Bool) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = startFormat
@@ -28,20 +27,7 @@ final class DataFormatter {
                     }
                 }
             }
-            
             return formattedTime
-        }
-        return ""
-    }
-    
-    func formatSunTime(dateString: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
-        if let date = dateFormatter.date(from: dateString) {
-            let formattedDateFormatter = DateFormatter()
-            formattedDateFormatter.dateFormat = "h:mm a"
-            let formattedString = formattedDateFormatter.string(from: date)
-            return formattedString
         }
         return ""
     }
@@ -100,27 +86,61 @@ final class DataFormatter {
     }
     
     func getDescriptionImage(weathercode: Int) -> String {
-        switch weathercode {
-        case 0:
-            return "sun.max.fill"
-        case 1, 2:
-            return "cloud.sun.fill"
-        case 3:
-            return "cloud.fill"
-        case 45, 48:
-            return "cloud.fog.fill"
-        case 51, 53, 55, 56, 57:
-            return "cloud.drizzle.fill"
-        case 61, 63, 65:
-            return "cloud.rain.fill"
-        case 66, 67:
-            return "cloud.sleet.fill"
-        case 71, 73, 75, 85, 86:
-            return "cloud.snow.fill"
-        case 80, 81, 82:
-            return "cloud.heavyrain.fill"
-        default:
-            return "sun.max.fill"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let currentHour = calendar.component(.hour, from: currentDate)
+        
+        if currentHour >= 6 && currentHour < 21 {
+            switch weathercode {
+            case 0:
+                return "sun.max.fill"
+            case 1, 2:
+                return "cloud.sun.fill"
+            case 3:
+                return "cloud.fill"
+            case 45, 48:
+                return "cloud.fog.fill"
+            case 51, 53, 55, 56, 57:
+                return "cloud.drizzle.fill"
+            case 61, 63, 65:
+                return "cloud.rain.fill"
+            case 66, 67:
+                return "cloud.sleet.fill"
+            case 71, 73, 75, 85, 86:
+                return "cloud.snow.fill"
+            case 80, 81, 82:
+                return "cloud.heavyrain.fill"
+            default:
+                return "sun.max.fill"
+            }
+        } else {
+            switch weathercode {
+            case 0:
+                return "moon.stars.fill"
+            case 1, 2:
+                return "cloud.moon.fill"
+            case 3:
+                return "cloud.fill"
+            case 45, 48:
+                return "cloud.fog.fill"
+            case 51, 53, 55, 56, 57:
+                return "cloud.drizzle.fill"
+            case 61, 63, 65:
+                return "cloud.rain.fill"
+            case 66, 67:
+                return "cloud.sleet.fill"
+            case 71, 73, 75, 85, 86:
+                return "cloud.snow.fill"
+            case 80, 81, 82:
+                return "cloud.heavyrain.fill"
+            default:
+                return "moon.stars.fill"
+            }
         }
+        
+        
     }
 }
